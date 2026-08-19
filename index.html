@@ -1,0 +1,1142 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IELTS Daily Trainer</title>
+
+<style>
+:root{
+  --bg:#f5f6fa;
+  --card:#ffffff;
+  --text:#171923;
+  --muted:#6b7280;
+  --line:#e5e7eb;
+  --dark:#111827;
+  --soft:#eef2ff;
+  --green:#047857;
+  --red:#b91c1c;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:rgba(245,246,250,.95);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:16px;
+}
+
+.wrap{
+  max-width:1000px;
+  margin:auto;
+}
+
+h1{
+  font-size:22px;
+  margin:0 0 5px;
+}
+
+.subtitle{
+  color:var(--muted);
+  font-size:13px;
+}
+
+main{
+  padding:0 14px 50px;
+}
+
+.tabs{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  margin:16px 0;
+}
+
+.tab{
+  border:1px solid var(--line);
+  background:white;
+  border-radius:12px;
+  padding:11px 6px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.tab.active{
+  background:var(--dark);
+  color:white;
+}
+
+.panel{
+  display:none;
+}
+
+.panel.active{
+  display:block;
+}
+
+.datebar{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding-bottom:4px;
+  margin-bottom:12px;
+}
+
+.datebtn{
+  flex:none;
+  border:1px solid var(--line);
+  background:white;
+  border-radius:999px;
+  padding:8px 12px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.datebtn.active{
+  background:var(--dark);
+  color:white;
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:16px;
+  margin:12px 0;
+  box-shadow:0 3px 15px rgba(0,0,0,.035);
+}
+
+.section-title{
+  font-size:18px;
+  font-weight:800;
+  margin-bottom:10px;
+}
+
+.note{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+  margin-bottom:10px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(235px,1fr));
+  gap:10px;
+}
+
+.word{
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:12px;
+}
+
+.wordtop{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  align-items:center;
+}
+
+.en{
+  font-size:18px;
+  font-weight:800;
+}
+
+.zh{
+  margin-top:5px;
+  line-height:1.5;
+}
+
+.hint,
+.syn{
+  color:var(--muted);
+  font-size:13px;
+  margin-top:4px;
+  line-height:1.5;
+}
+
+button{
+  font:inherit;
+}
+
+.speak{
+  border:0;
+  background:var(--soft);
+  border-radius:10px;
+  padding:7px 10px;
+  cursor:pointer;
+}
+
+.practice{
+  border-top:1px solid var(--line);
+  padding:13px 0;
+}
+
+.practice:first-child{
+  border-top:0;
+}
+
+input[type=text]{
+  width:100%;
+  margin-top:8px;
+  padding:11px;
+  border:1px solid #d8dce5;
+  border-radius:10px;
+  font-size:16px;
+}
+
+.check{
+  margin-top:8px;
+  border:0;
+  background:var(--dark);
+  color:white;
+  border-radius:10px;
+  padding:9px 12px;
+  cursor:pointer;
+}
+
+.result{
+  margin-top:8px;
+  font-size:14px;
+  font-weight:700;
+}
+
+.good{
+  color:var(--green);
+}
+
+.bad{
+  color:var(--red);
+}
+
+details{
+  border-top:1px solid var(--line);
+  padding:11px 0;
+}
+
+details:first-child{
+  border-top:0;
+}
+
+summary{
+  cursor:pointer;
+  font-weight:700;
+  line-height:1.5;
+}
+
+.pill{
+  display:inline-block;
+  background:#eef2f7;
+  border-radius:999px;
+  padding:4px 8px;
+  margin-top:5px;
+  font-size:12px;
+}
+
+.empty{
+  color:var(--muted);
+  padding:15px 0;
+}
+
+@media(max-width:650px){
+  .tabs{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>IELTS 最后冲刺训练站</h1>
+    <div class="subtitle">
+      按日期整理错词 · 发音 · 同义替换 · 长难句 · 每日练习
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div class="tabs">
+    <button class="tab active" data-tab="listening">听力</button>
+    <button class="tab" data-tab="reading">阅读</button>
+    <button class="tab" data-tab="speaking">口语</button>
+    <button class="tab" data-tab="writing">写作</button>
+  </div>
+
+  <!-- 听力 -->
+  <section id="listening" class="panel active">
+
+    <div class="datebar">
+      <button class="datebtn active" data-date="0819">8月19日</button>
+    </div>
+
+    <div id="listening-0819">
+
+      <div class="card">
+        <div class="section-title">8月19日｜今日不会 / 不熟的词</div>
+        <div class="note">
+          点 🔊 可以直接听发音。目标不是背音标，而是做到：看到词知道意思，听到声音能认出来。
+        </div>
+        <div id="vocabGrid" class="grid"></div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">20组同义替换</div>
+        <div id="synonymList"></div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">10组长难句</div>
+        <div class="note">
+          先看英文，自己判断主干和大意，再点开中文。
+        </div>
+        <div id="sentenceList"></div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">练习 A｜20组单词拼写</div>
+        <div class="note">
+          根据中文输入英文。重点练拼写、单复数、题干导航词。
+        </div>
+        <div id="wordPractice"></div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">练习 B｜10组同义替换</div>
+        <div id="synonymPractice"></div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">练习 C｜长难句理解</div>
+        <div id="sentencePractice"></div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">今日做题提醒</div>
+
+        <div class="practice">
+          <b>1.</b> 提到了 ≠ 答案。
+        </div>
+
+        <div class="practice">
+          <b>2.</b> 听到和选项一模一样的词，不要马上选，先听完整关系。
+        </div>
+
+        <div class="practice">
+          <b>3.</b> 上一题最多丢1分，继续想上一题可能再丢下一题。
+        </div>
+
+        <div class="practice">
+          <b>4.</b> Part 4 听到 first / another factor / however / in contrast / finally 等结构词，要准备往下一题移动。
+        </div>
+
+        <div class="practice">
+          <b>5.</b> 填空题预读先判断词性：名词、动词、形容词、数字、地点还是类别。
+        </div>
+
+        <div class="practice">
+          <b>6.</b> 听到了但来不及打完整，可以先写词干前几个字母，避免过几秒完全忘掉。
+        </div>
+
+        <div class="practice">
+          <b>7.</b> 错题复盘标记：H=没听到，V=词不认识，T=干扰项，A=注意力掉线，S=拼写/单复数。
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- 阅读 -->
+  <section id="reading" class="panel">
+    <div class="datebar">
+      <button class="datebtn active">8月19日</button>
+    </div>
+
+    <div class="card">
+      <div class="section-title">阅读训练区</div>
+      <div class="note">
+        后续每天把阅读错题发来后，会继续加入：Heading、T/F/NG、Matching Names、定位词、同义替换、长难句。
+      </div>
+
+      <div class="practice">
+        <b>Heading提醒：</b>
+        选整段主旨，不选只出现过一次的细节。
+      </div>
+
+      <div class="practice">
+        <b>人名题提醒：</b>
+        人名是定位词；Heading里人名通常只是例子。
+      </div>
+
+      <div class="practice">
+        <b>优先看：</b>
+        首句、尾句、however / but / although / instead 等转折位置。
+      </div>
+    </div>
+  </section>
+
+  <!-- 口语 -->
+  <section id="speaking" class="panel">
+    <div class="card">
+      <div class="section-title">口语训练区</div>
+
+      <div class="practice">
+        回答顺序：Answer → Why → Example / Detail
+      </div>
+
+      <div class="practice">
+        不需要强行用高级词，卡住时优先换简单表达，保证流利度。
+      </div>
+
+      <div class="practice">
+        常用救场：
+        <div class="pill">
+          I haven't really thought about this before, but I'd say...
+        </div>
+        <div class="pill">
+          The main reason is probably that...
+        </div>
+        <div class="pill">
+          A good example would be...
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 写作 -->
+  <section id="writing" class="panel">
+    <div class="card">
+      <div class="section-title">写作训练区</div>
+
+      <div class="practice">
+        每段只保留一个清晰中心观点。
+      </div>
+
+      <div class="practice">
+        检查：主谓一致、冠词、单复数、时态。
+      </div>
+
+      <div class="practice">
+        不临时换新模板，优先保证逻辑完整和表达准确。
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+
+const vocab = [
+  {
+    word:"frequent",
+    zh:"频繁的；经常发生的",
+    hint:"FREE-kwuhnt",
+    syn:"common / regular"
+  },
+  {
+    word:"occasional",
+    zh:"偶尔的；偶发的",
+    hint:"uh-KAY-zhuh-nuhl",
+    syn:"infrequent / from time to time"
+  },
+  {
+    word:"absence",
+    zh:"缺席；缺勤",
+    hint:"AB-suhns",
+    syn:"non-attendance"
+  },
+  {
+    word:"absenteeism",
+    zh:"经常缺勤的现象",
+    hint:"ab-suhn-TEE-iz-um",
+    syn:"repeated absence"
+  },
+  {
+    word:"factor",
+    zh:"因素",
+    hint:"FAK-ter",
+    syn:"reason / element"
+  },
+  {
+    word:"involved",
+    zh:"涉及的；有关的",
+    hint:"in-VAHLVD",
+    syn:"related / connected"
+  },
+  {
+    word:"gender",
+    zh:"性别",
+    hint:"JEN-der",
+    syn:"sex"
+  },
+  {
+    word:"employee",
+    zh:"员工",
+    hint:"im-PLOY-ee",
+    syn:"worker / staff member"
+  },
+  {
+    word:"employees",
+    zh:"员工们；注意复数",
+    hint:"im-PLOY-eez",
+    syn:"workers / staff"
+  },
+  {
+    word:"employer",
+    zh:"雇主",
+    hint:"im-PLOY-er",
+    syn:"company / boss"
+  },
+  {
+    word:"responsibility",
+    zh:"责任",
+    hint:"ri-spon-suh-BIL-uh-tee",
+    syn:"duty / obligation"
+  },
+  {
+    word:"evidence",
+    zh:"证据；依据",
+    hint:"EV-ih-duhns",
+    syn:"proof / support"
+  },
+  {
+    word:"inconclusive",
+    zh:"没有明确结论的",
+    hint:"in-kuhn-KLOO-siv",
+    syn:"unclear / not definite"
+  },
+  {
+    word:"organisation",
+    zh:"组织；机构；公司",
+    hint:"or-guh-nai-ZAY-shun",
+    syn:"institution / company"
+  },
+  {
+    word:"acceptable",
+    zh:"可接受的",
+    hint:"ak-SEP-tuh-buhl",
+    syn:"allowed / tolerated"
+  },
+  {
+    word:"work group",
+    zh:"工作小组；团队",
+    hint:"WORK groop",
+    syn:"team"
+  },
+  {
+    word:"workforce",
+    zh:"劳动力；全体员工",
+    hint:"WORK-force",
+    syn:"staff / employees"
+  },
+  {
+    word:"public sector",
+    zh:"公共部门",
+    hint:"PUB-lik SEK-ter",
+    syn:"government sector"
+  },
+  {
+    word:"private sector",
+    zh:"私营部门",
+    hint:"PRY-vit SEK-ter",
+    syn:"private business sector"
+  },
+  {
+    word:"bureaucratic",
+    zh:"官僚化的；程序繁琐的",
+    hint:"byoo-ruh-KRAT-ik",
+    syn:"administrative / rule-bound"
+  },
+  {
+    word:"state controls",
+    zh:"政府 / 国家管控",
+    hint:"STATE kuhn-TROHLZ",
+    syn:"government controls"
+  },
+  {
+    word:"student",
+    zh:"学生",
+    hint:"STOO-duhnt",
+    syn:"learner"
+  },
+  {
+    word:"students",
+    zh:"学生们；注意复数 s",
+    hint:"STOO-duhnts",
+    syn:"learners"
+  },
+  {
+    word:"teenager",
+    zh:"青少年",
+    hint:"TEEN-ay-jer",
+    syn:"adolescent"
+  },
+  {
+    word:"teenagers",
+    zh:"青少年们；注意复数 s",
+    hint:"TEEN-ay-jers",
+    syn:"adolescents"
+  },
+  {
+    word:"horror",
+    zh:"恐怖；恐怖片类型",
+    hint:"HOR-er",
+    syn:"scary genre"
+  },
+  {
+    word:"biology",
+    zh:"生物学",
+    hint:"bai-OL-uh-jee",
+    syn:"life science"
+  },
+  {
+    word:"software",
+    zh:"软件",
+    hint:"SOFT-wair",
+    syn:"computer programs"
+  },
+  {
+    word:"parking",
+    zh:"停车；停车区域",
+    hint:"PAR-king",
+    syn:"car parking"
+  },
+  {
+    word:"history",
+    zh:"历史",
+    hint:"HIS-tuh-ree",
+    syn:"the past"
+  },
+  {
+    word:"skills",
+    zh:"技能；注意复数",
+    hint:"SKILZ",
+    syn:"abilities"
+  },
+  {
+    word:"upper limit",
+    zh:"上限",
+    hint:"UP-er LIM-it",
+    syn:"maximum"
+  },
+  {
+    word:"telephone number",
+    zh:"电话号码",
+    hint:"TEL-uh-fohn NUM-ber",
+    syn:"phone number / contact number"
+  },
+  {
+    word:"exclusively",
+    zh:"专门地；仅限于",
+    hint:"ik-SKLOO-siv-lee",
+    syn:"only / solely"
+  },
+  {
+    word:"attractive",
+    zh:"有吸引力的",
+    hint:"uh-TRAK-tiv",
+    syn:"appealing"
+  },
+  {
+    word:"appealing",
+    zh:"有吸引力的",
+    hint:"uh-PEE-ling",
+    syn:"attractive"
+  },
+  {
+    word:"famous",
+    zh:"著名的",
+    hint:"FAY-muhs",
+    syn:"well-known"
+  },
+  {
+    word:"celebrities",
+    zh:"名人；明星",
+    hint:"suh-LEB-ri-teez",
+    syn:"famous people"
+  },
+  {
+    word:"luxury",
+    zh:"奢华；豪华",
+    hint:"LUK-shuh-ree",
+    syn:"elegance / high quality"
+  },
+  {
+    word:"luxurious",
+    zh:"豪华的",
+    hint:"lug-ZHOOR-ee-uhs",
+    syn:"elegant / high-end"
+  },
+  {
+    word:"surroundings",
+    zh:"周围环境",
+    hint:"suh-ROWN-dingz",
+    syn:"environment / setting"
+  },
+  {
+    word:"setting",
+    zh:"环境；场景",
+    hint:"SET-ing",
+    syn:"surroundings / environment"
+  },
+  {
+    word:"internationally",
+    zh:"在国际上",
+    hint:"in-ter-NASH-uh-nuh-lee",
+    syn:"worldwide"
+  },
+  {
+    word:"worldwide",
+    zh:"全世界范围内",
+    hint:"WORLD-wide",
+    syn:"internationally"
+  },
+  {
+    word:"purchase",
+    zh:"购买",
+    hint:"PUR-chuhs",
+    syn:"buy"
+  },
+  {
+    word:"available",
+    zh:"可获得的；可用的",
+    hint:"uh-VAY-luh-buhl",
+    syn:"accessible / obtainable"
+  },
+  {
+    word:"previous",
+    zh:"之前的；以前的",
+    hint:"PREE-vee-uhs",
+    syn:"former / earlier"
+  },
+  {
+    word:"former",
+    zh:"以前的；前任的",
+    hint:"FOR-mer",
+    syn:"previous"
+  },
+  {
+    word:"fresh ingredients",
+    zh:"新鲜食材",
+    hint:"FRESH in-GREE-dee-uhnts",
+    syn:"fresh produce"
+  },
+  {
+    word:"sample",
+    zh:"品尝；试用",
+    hint:"SAM-puhl",
+    syn:"taste / try"
+  },
+  {
+    word:"royalty",
+    zh:"王室；皇室",
+    hint:"ROY-uhl-tee",
+    syn:"royal family"
+  },
+  {
+    word:"capture memories",
+    zh:"留下 / 记录回忆",
+    hint:"KAP-cher MEM-uh-reez",
+    syn:"keep memories / take photos"
+  },
+  {
+    word:"highlight",
+    zh:"亮点；最精彩部分",
+    hint:"HY-lite",
+    syn:"main attraction / best part"
+  },
+  {
+    word:"benefit",
+    zh:"好处；益处",
+    hint:"BEN-uh-fit",
+    syn:"advantage"
+  },
+  {
+    word:"facility",
+    zh:"设施",
+    hint:"fuh-SIL-uh-tee",
+    syn:"amenity"
+  },
+  {
+    word:"provide",
+    zh:"提供",
+    hint:"pruh-VYDE",
+    syn:"offer / supply"
+  },
+  {
+    word:"likely",
+    zh:"可能的",
+    hint:"LYKE-lee",
+    syn:"probable"
+  },
+  {
+    word:"attitude",
+    zh:"态度",
+    hint:"AT-uh-tood",
+    syn:"view / approach"
+  }
+];
+
+const synonymGroups = [
+  ["important","significant / crucial / major","重要的"],
+  ["increase","rise / grow","增加"],
+  ["decrease","fall / decline","减少"],
+  ["cause","lead to / result in","导致"],
+  ["problem","issue / difficulty","问题"],
+  ["benefit","advantage","好处"],
+  ["employee","worker / staff","员工"],
+  ["organisation","institution / company","组织、机构"],
+  ["factor","reason / element","因素"],
+  ["type","kind","类型"],
+  ["work","job / occupation","工作"],
+  ["group","team","小组、团队"],
+  ["acceptable","allowed / tolerated","可接受的"],
+  ["famous","well-known","著名的"],
+  ["people","guests / visitors","人、客人"],
+  ["attractive","appealing","有吸引力的"],
+  ["surroundings","environment / setting","周围环境"],
+  ["previous","former / earlier","之前的"],
+  ["buy","purchase","购买"],
+  ["special","unique","特别的"]
+];
+
+const sentences = [
+  [
+    "Absence may be frequent or occasional.",
+    "缺勤可能经常发生，也可能只是偶尔发生。",
+    "absence / frequent / occasional"
+  ],
+  [
+    "The evidence is inconclusive.",
+    "现有证据还不足以得出明确结论。",
+    "evidence / inconclusive"
+  ],
+  [
+    "The culture of the organisation may make absenteeism more acceptable.",
+    "机构文化可能会让缺勤现象更容易被接受。",
+    "organisation / absenteeism / acceptable"
+  ],
+  [
+    "The public sector has higher absence levels than the private sector.",
+    "公共部门的缺勤率高于私营部门。",
+    "public sector / private sector"
+  ],
+  [
+    "Systems may be more bureaucratic because of state controls.",
+    "由于政府管控，制度可能会更加官僚化、程序更加繁琐。",
+    "bureaucratic / state controls"
+  ],
+  [
+    "The programme is exclusively for students under the upper age limit.",
+    "该项目仅面向低于年龄上限的学生。",
+    "exclusively / upper limit"
+  ],
+  [
+    "The tea is specially made for the hotel rather than sold worldwide.",
+    "这种茶是酒店专供，而不是在全球销售。",
+    "specially made / worldwide"
+  ],
+  [
+    "Customers can purchase the cups and saucers used at the hotel.",
+    "顾客可以买到酒店使用的杯子和茶碟。",
+    "purchase"
+  ],
+  [
+    "The highlight of the event is not always the detail mentioned first.",
+    "活动的亮点并不一定是最先被提到的细节。",
+    "highlight"
+  ],
+  [
+    "The workforce includes all employees working for an organisation.",
+    "workforce指一个机构中所有工作的员工。",
+    "workforce / employees / organisation"
+  ]
+];
+
+function speak(text){
+  if(!("speechSynthesis" in window)){
+    alert("这个浏览器暂时不支持语音朗读");
+    return;
+  }
+
+  speechSynthesis.cancel();
+
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "en-GB";
+  u.rate = 0.82;
+
+  speechSynthesis.speak(u);
+}
+
+function renderVocab(){
+  document.getElementById("vocabGrid").innerHTML =
+    vocab.map(v => `
+      <div class="word">
+        <div class="wordtop">
+          <div class="en">${v.word}</div>
+          <button
+            class="speak"
+            onclick='speak(${JSON.stringify(v.word)})'>
+            🔊
+          </button>
+        </div>
+
+        <div class="zh">${v.zh}</div>
+
+        <div class="hint">
+          近似读法：${v.hint}
+        </div>
+
+        <div class="syn">
+          同义 / 相关：${v.syn}
+        </div>
+      </div>
+    `).join("");
+}
+
+function renderSynonyms(){
+  document.getElementById("synonymList").innerHTML =
+    synonymGroups.map((s,i) => `
+      <div class="practice">
+        <b>${i+1}. ${s[0]}</b>
+        → ${s[1]}
+        <div class="pill">${s[2]}</div>
+      </div>
+    `).join("");
+}
+
+function renderSentences(){
+  document.getElementById("sentenceList").innerHTML =
+    sentences.map((s,i) => `
+      <details>
+        <summary>
+          ${i+1}. ${s[0]}
+          <button
+            class="speak"
+            onclick='event.preventDefault();event.stopPropagation();speak(${JSON.stringify(s[0])})'>
+            🔊
+          </button>
+        </summary>
+
+        <div style="padding:8px 0">
+          ${s[1]}
+        </div>
+
+        <div class="note">
+          重点：${s[2]}
+        </div>
+      </details>
+    `).join("");
+}
+
+const practiceWordNames = [
+  "frequent",
+  "evidence",
+  "inconclusive",
+  "bureaucratic",
+  "workforce",
+  "organisation",
+  "employee",
+  "employer",
+  "factor",
+  "absence",
+  "absenteeism",
+  "responsibility",
+  "acceptable",
+  "students",
+  "teenagers",
+  "horror",
+  "biology",
+  "software",
+  "purchase",
+  "previous"
+];
+
+const practiceWords = practiceWordNames.map(name =>
+  vocab.find(v => v.word === name)
+);
+
+function renderWordPractice(){
+  document.getElementById("wordPractice").innerHTML =
+    practiceWords.map((v,i) => `
+      <div class="practice">
+        <b>${i+1}. ${v.zh}</b>
+
+        <input
+          id="wp${i}"
+          type="text"
+          placeholder="输入英文"
+          autocomplete="off"
+        >
+
+        <button
+          class="check"
+          onclick='checkWord(${i},${JSON.stringify(v.word)})'>
+          检查
+        </button>
+
+        <button
+          class="speak"
+          onclick='speak(${JSON.stringify(v.word)})'>
+          🔊 听答案
+        </button>
+
+        <div
+          id="wr${i}"
+          class="result">
+        </div>
+      </div>
+    `).join("");
+}
+
+function checkWord(i,answer){
+  const input =
+    document
+      .getElementById("wp"+i)
+      .value
+      .trim()
+      .toLowerCase();
+
+  const correct =
+    answer.toLowerCase();
+
+  const result =
+    document.getElementById("wr"+i);
+
+  if(input === correct){
+    result.innerHTML =
+      `<span class="good">✓ 正确</span>`;
+  }else{
+    result.innerHTML =
+      `<span class="bad">✗ 正确答案：${answer}</span>`;
+  }
+}
+
+function renderSynonymPractice(){
+  document.getElementById("synonymPractice").innerHTML =
+    synonymGroups.slice(0,10).map((s,i) => `
+      <div class="practice">
+        <b>
+          ${i+1}. 写出 “${s[0]}” 的一个同义替换
+        </b>
+
+        <input
+          type="text"
+          placeholder="先自己写"
+        >
+
+        <button
+          class="check"
+          onclick="
+            document.getElementById('synResult${i}')
+            .innerHTML='<span class=good>参考：${s[1]}</span>'
+          ">
+          看参考
+        </button>
+
+        <div
+          id="synResult${i}"
+          class="result">
+        </div>
+      </div>
+    `).join("");
+}
+
+function renderSentencePractice(){
+  document.getElementById("sentencePractice").innerHTML =
+    sentences.map((s,i) => `
+      <div class="practice">
+
+        <b>${i+1}. ${s[0]}</b>
+
+        <div style="margin-top:8px">
+
+          <button
+            class="speak"
+            onclick='speak(${JSON.stringify(s[0])})'>
+            🔊 听句子
+          </button>
+
+          <button
+            class="check"
+            onclick="
+              document.getElementById('sentenceAnswer${i}')
+              .style.display='block'
+            ">
+            看中文
+          </button>
+
+        </div>
+
+        <div
+          id="sentenceAnswer${i}"
+          style="display:none;margin-top:8px">
+
+          ${s[1]}
+
+          <div class="note">
+            重点：${s[2]}
+          </div>
+
+        </div>
+
+      </div>
+    `).join("");
+}
+
+document
+  .querySelectorAll(".tab")
+  .forEach(btn => {
+
+    btn.addEventListener("click",() => {
+
+      document
+        .querySelectorAll(".tab")
+        .forEach(x => x.classList.remove("active"));
+
+      document
+        .querySelectorAll(".panel")
+        .forEach(x => x.classList.remove("active"));
+
+      btn.classList.add("active");
+
+      document
+        .getElementById(btn.dataset.tab)
+        .classList.add("active");
+    });
+
+  });
+
+renderVocab();
+renderSynonyms();
+renderSentences();
+renderWordPractice();
+renderSynonymPractice();
+renderSentencePractice();
+
+</script>
+
+</body>
+</html>
